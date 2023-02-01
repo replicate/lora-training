@@ -1,4 +1,20 @@
-# Use LoRA PTI Cog
+# LoRA training Cog model
+
+## Use on Replicate
+
+Easy-to-use model pre-configured for faces, objects, and styles:
+
+[![Replicate](https://replicate.com/replicate/lora-training/badge)](https://replicate.com/replicate/lora-training)
+
+Advanced model with all the parameters:
+
+[![Replicate](https://replicate.com/replicate/lora-advanced-training/badge)](https://replicate.com/replicate/lora-advanced-training)
+
+Feed the trained model into this inference model to run predictions:
+
+[![Replicate](https://replicate.com/replicate/lora/badge)](https://replicate.com/replicate/lora)
+
+## Use locally
 
 First, download the pre-trained weights [with your Hugging Face auth token](https://huggingface.co/settings/tokens):
 
@@ -9,10 +25,10 @@ cog run script/download-weights <your-hugging-face-auth-token>
 Then, you can run train your dreambooth:
 
 ```
-cog predict -i instance_data=@quo.zip
+cog predict -i instance_data=@my-images.zip
 ```
 
-Resulting file will contain LoRAs that can be used with `patch_pipe` function:
+The resulting LoRA weights file can be used with `patch_pipe` function:
 
 ```python
 from diffusers import StableDiffusionPipeline
@@ -25,7 +41,7 @@ pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float
     "cuda:1"
 )
 
-patch_pipe(pipe, "./step_1000.safetensors")
+patch_pipe(pipe, "./my-images.safetensors")
 prompt = "detailed photo of <s1><s2>, detailed face, a brown cloak, brown steampunk corset, belt, virtual youtuber, cowboy shot, feathers in hair, feather hair ornament, white shirt, brown gloves, shooting arrows"
 
 tune_lora_scale(pipe.unet, 0.8)
@@ -39,7 +55,4 @@ imgs = pipe(
     width=512,
 ).images
 ...
-
 ```
-
-Example Doc on running safetensor PTI outputs at `inference_example.ipynb`

@@ -16,3 +16,7 @@ push-advanced: cog-yaml-advanced
 
 .PHONY: push
 push: push-basic push-advanced
+
+.PHONY: lint
+lint: cog-yaml-basic
+	cog run flake8 *.py

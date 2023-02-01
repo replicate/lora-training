@@ -1,15 +1,17 @@
-import os
 import gc
-import mimetypes
-import shutil
-from zipfile import ZipFile
 import torch
-
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
 from lora_diffusion import (
     UNET_DEFAULT_TARGET_REPLACE,
     TEXT_ENCODER_DEFAULT_TARGET_REPLACE,
+)
+
+from common import (
+    random_seed,
+    clean_directories,
+    extract_zip_and_flatten,
+    get_output_filename,
 )
 
 
@@ -169,41 +171,18 @@ class Predictor(BasePredictor):
         ),
     ) -> Path:
         if seed is None:
-            seed = int.from_bytes(os.urandom(2), "big")
+            seed = random_seed()
         print(f"Using seed: {seed}")
 
         # check that the data is provided
         cog_instance_data = "cog_instance_data"
         cog_class_data = "cog_class_data"
         cog_output_dir = "checkpoints"
-        for path in [cog_instance_data, cog_output_dir, cog_class_data]:
-            if os.path.exists(path):
-                shutil.rmtree(path)
-            os.makedirs(path)
+        clean_directories([cog_instance_data, cog_output_dir, cog_class_data])
 
-        # extract zip contents, flattening any paths present within it
-        with ZipFile(str(instance_data), "r") as zip_ref:
-            for zip_info in zip_ref.infolist():
-                if zip_info.filename[-1] == "/" or zip_info.filename.startswith(
-                    "__MACOSX"
-                ):
-                    continue
-                mt = mimetypes.guess_type(zip_info.filename)
-                if mt and mt[0] and mt[0].startswith("image/"):
-                    zip_info.filename = os.path.basename(zip_info.filename)
-                    zip_ref.extract(zip_info, cog_instance_data)
-
+        extract_zip_and_flatten(instance_data, cog_instance_data)
         if class_data is not None:
-            with ZipFile(str(class_data), "r") as zip_ref:
-                for zip_info in zip_ref.infolist():
-                    if zip_info.filename[-1] == "/" or zip_info.filename.startswith(
-                        "__MACOSX"
-                    ):
-                        continue
-                    mt = mimetypes.guess_type(zip_info.filename)
-                    if mt and mt[0] and mt[0].startswith("image/"):
-                        zip_info.filename = os.path.basename(zip_info.filename)
-                        zip_ref.extract(zip_info, cog_class_data)
+            extract_zip_and_flatten(class_data, cog_class_data)
 
         if use_template == "none":
             use_template = "null"
@@ -256,4 +235,10 @@ class Predictor(BasePredictor):
         gc.collect()
         torch.cuda.empty_cache()
 
-        return Path(cog_output_dir) / f"step_{max_train_steps_tuning}.safetensors"
+        weights_path = (
+            Path(cog_output_dir) / f"step_{max_train_steps_tuning}.safetensors"
+        )
+        output_path = Path(cog_output_dir) / get_output_filename(instance_data)
+        weights_path.rename(output_path)
+
+        return output_path
