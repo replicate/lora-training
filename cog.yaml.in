@@ -1,0 +1,24 @@
+# Configuration for Cog ⚙️
+# Reference: https://github.com/replicate/cog/blob/main/docs/yaml.md
+
+build:
+  gpu: true
+  cuda: "11.4"
+  python_version: "3.10"
+  system_packages:
+    - "ffmpeg"
+    - "libsm6"
+    - "libxext6"
+  python_packages:
+    - "diffusers==0.11.1"
+    - "torch==1.13.0"
+    - "ftfy==6.1.1"
+    - "scipy==1.9.3"
+    - "transformers==4.25.1"
+    - "accelerate==0.15.0"
+    - "git+https://github.com/cloneofsimo/lora.git"
+    - "opencv-python"
+    - "torchvision"
+    - "mediapipe"
+
+predict: "$PREDICT_FILE:Predictor"

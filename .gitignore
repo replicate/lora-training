@@ -1,0 +1,10 @@
+cog_class_data
+cog_instance_data
+*-cache
+__debug*
+__pycache__
+checkpoints
+.cog
+*.safetensors
+output.zip
+cog.yaml
