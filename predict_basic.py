@@ -87,17 +87,22 @@ class Predictor(BasePredictor):
             seed = int.from_bytes(os.urandom(2), "big")
         print(f"Using seed: {seed}")
 
-        params = {k: v for k, v in TASK_PARAMETERS[task].items()}
-        params.update(COMMON_PARAMETERS)
-        params["resolution"] = resolution
-        params["seed"] = seed
-
         cog_instance_data = "cog_instance_data"
         cog_output_dir = "checkpoints"
         for path in [cog_instance_data, cog_output_dir]:
             if os.path.exists(path):
                 shutil.rmtree(path)
             os.makedirs(path)
+
+        params = {k: v for k, v in TASK_PARAMETERS[task].items()}
+        params.update(COMMON_PARAMETERS)
+        params.update({
+            "pretrained_model_name_or_path": "./stable-diffusion-v1-5-cache",
+            "instance_data_dir": cog_instance_data,
+            "output_dir": output_data,
+            "resolution": resolution,
+            "seed": seed,
+        })
 
         # extract zip contents, flattening any paths present within it
         with ZipFile(str(instance_data), "r") as zip_ref:
