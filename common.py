@@ -36,4 +36,4 @@ def extract_zip_and_flatten(zip_path, output_path):
 
 
 def get_output_filename(input_filename):
-    return Path(input_filename).stem.with_suffix(".safetensors")
+    return Path(Path(input_filename).name).with_suffix(".safetensors")

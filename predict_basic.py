@@ -71,6 +71,7 @@ class Predictor(BasePredictor):
             description="A ZIP file containing your training images (JPG, PNG, etc. size not restricted). These images contain your 'subject' that you want the trained model to embed in the output domain for later generating customized scenes beyond the training images. For best results, use images without noise or unrelated objects in the background.",
         ),
         task: str = Input(
+            default="face",
             choices=["face", "object", "style"],
             description="Type of LoRA model you want to train",
         ),
