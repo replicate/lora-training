@@ -15,7 +15,7 @@ push-advanced: cog-yaml-advanced
 	cog push r8.im/replicate/lora-advanced-training
 
 .PHONY: push
-push: push-basic push-advanced
+push: lint push-basic push-advanced
 
 .PHONY: lint
 lint: cog-yaml-basic

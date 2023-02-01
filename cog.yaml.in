@@ -16,7 +16,7 @@ build:
     - "scipy==1.9.3"
     - "transformers==4.25.1"
     - "accelerate==0.15.0"
-    - "git+https://github.com/cloneofsimo/lora.git@437cb62131bd2eed20eb0bfd5e8eb35b6f6d4d4f"
+    - "git+https://github.com/cloneofsimo/lora.git@b1d82939ac063f54463f495a1c8299d2fe4ea291"
     - "opencv-python==4.7.0.68"
     - "torchvision==0.14.0"
     - "mediapipe==0.9.0.1"
