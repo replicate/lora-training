@@ -106,7 +106,15 @@ class Predictor(BasePredictor):
         ),
         lora_rank: int = Input(
             default=4,
-            description="The rank for the LORA loss.",
+            description="The rank for the LORA.",
+        ),
+        lora_dropout_p: float = Input(
+            default=0.1,
+            description="Dropout at lora",
+        ),
+        lora_scale: float = Input(
+            default=1.0,
+            description="Scale for the LORA.",
         ),
         lr_scheduler_lora: str = Input(
             description="The scheduler type to use",
@@ -131,10 +139,6 @@ class Predictor(BasePredictor):
         max_train_steps_tuning: int = Input(
             default=1000,
             description="The maximum number of training steps for the tuning.",
-        ),
-        perform_inversion: bool = Input(
-            default=True,
-            description="Whether or not to perform an inversion.",
         ),
         placeholder_token_at_data: str = Input(
             default=None,
@@ -213,6 +217,8 @@ class Predictor(BasePredictor):
             learning_rate_unet=learning_rate_unet,
             lora_clip_target_modules=TEXT_ENCODER_DEFAULT_TARGET_REPLACE,
             lora_rank=lora_rank,
+            lora_dropout_p=lora_dropout_p,
+            lora_scale=lora_scale,
             lora_unet_target_modules=UNET_DEFAULT_TARGET_REPLACE,
             lr_scheduler_lora=lr_scheduler_lora,
             lr_warmup_steps_lora=lr_warmup_steps_lora,
