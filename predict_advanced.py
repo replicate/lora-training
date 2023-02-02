@@ -68,10 +68,6 @@ class Predictor(BasePredictor):
             description="Number of steps for the warmup in the lr scheduler.",
             default=0,
         ),
-        use_8bit_adam: bool = Input(
-            description="Whether or not to use 8-bit Adam from bitsandbytes.",
-            default=False,
-        ),
         clip_ti_decay: bool = Input(
             default=True,
             description="Whether or not to clip the TI decay to be between 0 and 1.",
@@ -149,7 +145,7 @@ class Predictor(BasePredictor):
             description="The placeholder tokens to use for the initializer. If not provided, will use the first tokens of the data.",
         ),
         use_face_segmentation_condition: bool = Input(
-            default=True,
+            default=False,
             description="Whether or not to use the face segmentation condition.",
         ),
         use_template: str = Input(
@@ -203,7 +199,7 @@ class Predictor(BasePredictor):
             scale_lr=scale_lr,
             lr_scheduler=lr_scheduler,
             lr_warmup_steps=lr_warmup_steps,
-            use_8bit_adam=use_8bit_adam,
+            use_8bit_adam=False,
             mixed_precision="fp16",
             output_dir=cog_output_dir,
             clip_ti_decay=clip_ti_decay,
