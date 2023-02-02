@@ -140,6 +140,10 @@ class Predictor(BasePredictor):
             default=1000,
             description="The maximum number of training steps for the tuning.",
         ),
+        perform_inversion: bool = Input(
+            default=True,
+            description="Whether to perform inversion during training.",
+        ),
         placeholder_token_at_data: str = Input(
             default=None,
             description="Whether or not to use a placeholder token at the data.",
