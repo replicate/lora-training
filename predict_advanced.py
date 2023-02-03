@@ -165,6 +165,10 @@ class Predictor(BasePredictor):
             seed = random_seed()
         print(f"Using seed: {seed}")
 
+        assert (
+            train_text_encoder
+        ), "train_text_encoder must be True. This will be updated in the future."
+
         # check that the data is provided
         cog_instance_data = "cog_instance_data"
         cog_class_data = "cog_class_data"
