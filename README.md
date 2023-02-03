@@ -14,6 +14,8 @@ Feed the trained model into this inference model to run predictions:
 
 [![Replicate](https://replicate.com/replicate/lora/badge)](https://replicate.com/replicate/lora)
 
+If you want to share your trained LoRAs, please join the `#lora` channel in the [Replicate Discord](https://discord.gg/replicate).
+
 ## Use locally
 
 First, download the pre-trained weights [with your Hugging Face auth token](https://huggingface.co/settings/tokens):
