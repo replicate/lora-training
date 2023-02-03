@@ -172,9 +172,7 @@ class Predictor(BasePredictor):
         clean_directories([cog_instance_data, cog_output_dir, cog_class_data])
 
         extract_zip_and_flatten(instance_data, cog_instance_data)
-        if class_data is not None:
-            extract_zip_and_flatten(class_data, cog_class_data)
-
+        
         if use_template == "none":
             use_template = "null"
 
@@ -184,7 +182,6 @@ class Predictor(BasePredictor):
             pretrained_vae_name_or_path=None,
             revision=None,
             instance_data_dir=cog_instance_data,
-            class_data_dir=cog_class_data,
             seed=seed,
             resolution=resolution,
             train_text_encoder=train_text_encoder,
@@ -201,7 +198,7 @@ class Predictor(BasePredictor):
             color_jitter=color_jitter,
             continue_inversion=continue_inversion,
             continue_inversion_lr=continue_inversion_lr,
-            device=device,
+            device="cuda:0",
             initializer_tokens=initializer_tokens,
             learning_rate_text=learning_rate_text,
             learning_rate_ti=learning_rate_ti,
@@ -215,7 +212,7 @@ class Predictor(BasePredictor):
             lr_warmup_steps_lora=lr_warmup_steps_lora,
             max_train_steps_ti=max_train_steps_ti,
             max_train_steps_tuning=max_train_steps_tuning,
-            perform_inversion=perform_inversion,
+            perform_inversion=True,
             placeholder_token_at_data=placeholder_token_at_data,
             placeholder_tokens=placeholder_tokens,
             save_steps=max_train_steps_tuning,
