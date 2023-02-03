@@ -172,7 +172,7 @@ class Predictor(BasePredictor):
         clean_directories([cog_instance_data, cog_output_dir, cog_class_data])
 
         extract_zip_and_flatten(instance_data, cog_instance_data)
-        
+
         if use_template == "none":
             use_template = "null"
 
