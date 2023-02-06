@@ -8,11 +8,11 @@ cog-yaml-advanced:
 
 .PHONY: push-basic
 push-basic: cog-yaml-basic
-	cog push r8.im/replicate/lora-training
+	cog push r8.im/cloneofsimo/lora-training
 
 .PHONY: push-advanced
 push-advanced: cog-yaml-advanced
-	cog push r8.im/replicate/lora-advanced-training
+	cog push r8.im/cloneofsimo/lora-advanced-training
 
 .PHONY: push
 push: lint push-basic push-advanced
