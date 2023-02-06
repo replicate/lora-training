@@ -1,9 +1,13 @@
 import os
 import shutil
 import mimetypes
+import string
 from zipfile import ZipFile
 
 from cog import Path
+
+punct_to_clean = string.punctuation.replace('-', '')
+cleaner = str.maketrans('', '', punct_to_clean)
 
 
 def clean_directory(path):
@@ -36,4 +40,5 @@ def extract_zip_and_flatten(zip_path, output_path):
 
 
 def get_output_filename(input_filename):
-    return Path(Path(input_filename).name).with_suffix(".safetensors")
+    temp_name = Path(input_filename).name
+    return Path(temp_name.translate(cleaner)).with_suffix(".safetensors")
