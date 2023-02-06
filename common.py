@@ -1,6 +1,7 @@
 import os
 import shutil
 import mimetypes
+import re
 from zipfile import ZipFile
 
 from cog import Path
@@ -36,4 +37,5 @@ def extract_zip_and_flatten(zip_path, output_path):
 
 
 def get_output_filename(input_filename):
-    return Path(Path(input_filename).name).with_suffix(".safetensors")
+    temp_name = Path(input_filename).name
+    return Path(re.sub("[^-a-zA-Z0-9_]", "", temp_name)).with_suffix(".safetensors")
