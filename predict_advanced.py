@@ -21,11 +21,6 @@ class Predictor(BasePredictor):
         instance_data: Path = Input(
             description="A ZIP file containing your training images (JPG, PNG, etc. size not restricted). These images contain your 'subject' that you want the trained model to embed in the output domain for later generating customized scenes beyond the training images. For best results, use images without noise or unrelated objects in the background.",
         ),
-        # TODO: class_data, with_prior_preservation (or remove mention of class_prompt in class_data description)
-        class_data: Path = Input(
-            description="An optional ZIP file containing the training data of class images. This corresponds to `class_prompt` above, also with the purpose of keeping the model generalizable. By default, the pretrained stable-diffusion model will generate N images (determined by the `num_class_images` you set) based on the `class_prompt` provided. But to save time or to have your preferred specific set of `class_data`, you can also provide them in a ZIP file.",
-            default=None,
-        ),
         seed: int = Input(description="A seed for reproducible training", default=1337),
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
@@ -70,23 +65,19 @@ class Predictor(BasePredictor):
         ),
         clip_ti_decay: bool = Input(
             default=True,
-            description="Whether or not to clip the TI decay to be between 0 and 1.",
+            description="Whether or not to perform Bayesian Learning Rule on norm of the CLIP latent.",
         ),
         color_jitter: bool = Input(
             default=True,
-            description="Whether or not to use color jitter.",
+            description="Whether or not to use color jitter at augmentation.",
         ),
         continue_inversion: bool = Input(
             default=False,
-            description="Whether or not to continue an inversion.",
+            description="Whether or not to continue inversion.",
         ),
         continue_inversion_lr: float = Input(
             default=1e-4,
             description="The learning rate for continuing an inversion.",
-        ),
-        device: str = Input(
-            default="cuda:0",
-            description="The device to use. Can be 'cuda' or 'cpu'.",
         ),
         initializer_tokens: str = Input(
             default=None,
@@ -106,15 +97,15 @@ class Predictor(BasePredictor):
         ),
         lora_rank: int = Input(
             default=4,
-            description="The rank for the LORA.",
+            description="Rank of the LoRA. Larger it is, more likely to capture fidelity but less likely to be editable. Larger rank will make the end result larger.",
         ),
         lora_dropout_p: float = Input(
             default=0.1,
-            description="Dropout at lora",
+            description="Dropout for the LoRA layer. Reference LoRA paper for more details.",
         ),
         lora_scale: float = Input(
             default=1.0,
-            description="Scale for the LORA.",
+            description="Scaling parameter at the end of the LoRA layer.",
         ),
         lr_scheduler_lora: str = Input(
             description="The scheduler type to use",
@@ -140,13 +131,9 @@ class Predictor(BasePredictor):
             default=1000,
             description="The maximum number of training steps for the tuning.",
         ),
-        perform_inversion: bool = Input(
-            default=True,
-            description="Whether to perform inversion during training.",
-        ),
         placeholder_token_at_data: str = Input(
             default=None,
-            description="Whether or not to use a placeholder token at the data.",
+            description="If this value is provided as 'X|Y', it will transform target word X into Y at caption. You are required to provide caption as filename (not regarding extension), and Y has to contain placeholder token below. You are also required to set `None` for `use_template` argument to use this feature.",
         ),
         placeholder_tokens: str = Input(
             default="<s1>|<s2>",
@@ -178,6 +165,10 @@ class Predictor(BasePredictor):
             seed = random_seed()
         print(f"Using seed: {seed}")
 
+        assert (
+            train_text_encoder
+        ), "train_text_encoder must be True. This will be updated in the future."
+
         # check that the data is provided
         cog_instance_data = "cog_instance_data"
         cog_class_data = "cog_class_data"
@@ -185,8 +176,6 @@ class Predictor(BasePredictor):
         clean_directories([cog_instance_data, cog_output_dir, cog_class_data])
 
         extract_zip_and_flatten(instance_data, cog_instance_data)
-        if class_data is not None:
-            extract_zip_and_flatten(class_data, cog_class_data)
 
         if use_template == "none":
             use_template = "null"
@@ -197,7 +186,6 @@ class Predictor(BasePredictor):
             pretrained_vae_name_or_path=None,
             revision=None,
             instance_data_dir=cog_instance_data,
-            class_data_dir=cog_class_data,
             seed=seed,
             resolution=resolution,
             train_text_encoder=train_text_encoder,
@@ -214,7 +202,7 @@ class Predictor(BasePredictor):
             color_jitter=color_jitter,
             continue_inversion=continue_inversion,
             continue_inversion_lr=continue_inversion_lr,
-            device=device,
+            device="cuda:0",
             initializer_tokens=initializer_tokens,
             learning_rate_text=learning_rate_text,
             learning_rate_ti=learning_rate_ti,
@@ -228,7 +216,7 @@ class Predictor(BasePredictor):
             lr_warmup_steps_lora=lr_warmup_steps_lora,
             max_train_steps_ti=max_train_steps_ti,
             max_train_steps_tuning=max_train_steps_tuning,
-            perform_inversion=perform_inversion,
+            perform_inversion=True,
             placeholder_token_at_data=placeholder_token_at_data,
             placeholder_tokens=placeholder_tokens,
             save_steps=max_train_steps_tuning,
