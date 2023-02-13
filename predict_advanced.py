@@ -67,6 +67,10 @@ class Predictor(BasePredictor):
             default=True,
             description="Whether or not to perform Bayesian Learning Rule on norm of the CLIP latent.",
         ),
+        cached_latents: bool = Input(
+            default=True,
+            description="Whether or not to cache VAE latent.",
+        ),
         color_jitter: bool = Input(
             default=True,
             description="Whether or not to use color jitter at augmentation.",
@@ -198,6 +202,7 @@ class Predictor(BasePredictor):
             use_8bit_adam=False,
             mixed_precision="fp16",
             output_dir=cog_output_dir,
+            cached_latents=cached_latents,
             clip_ti_decay=clip_ti_decay,
             color_jitter=color_jitter,
             continue_inversion=continue_inversion,

@@ -19,6 +19,7 @@ COMMON_PARAMETERS = {
     "lr_scheduler": "constant",
     "scale_lr": True,
     "lr_warmup_steps": 0,
+    "cached_latents": True,
     "clip_ti_decay": True,
     "color_jitter": True,
     "continue_inversion": False,
