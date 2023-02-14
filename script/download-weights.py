@@ -23,12 +23,16 @@ os.makedirs(vae_cache_dir, exist_ok=True)
 
 pipe = StableDiffusionPipeline.from_pretrained(
     "runwayml/stable-diffusion-v1-5",
+    torch_dtype=torch.float16,
 )
 
 pipe.save_pretrained(cache_dir)
 
 
 pretrained_vae = AutoencoderKL.from_pretrained(
-    "stabilityai/sd-vae-ft-mse", subfolder=None, revision=None
+    "stabilityai/sd-vae-ft-mse",
+    torch_dtype=torch.float16,
+    subfolder=None,
+    revision=None,
 )
 pretrained_vae.save_pretrained(vae_cache_dir)
