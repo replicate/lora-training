@@ -7,14 +7,8 @@ import torch
 from diffusers import StableDiffusionPipeline
 from diffusers import (
     AutoencoderKL,
-    DDIMScheduler,
-    DDPMScheduler,
     StableDiffusionPipeline,
-    UNet2DConditionModel,
 )
-
-from transformers import CLIPTextModel, CLIPTokenizer
-
 
 cache_dir = "stable-diffusion-v1-5-cache"
 vae_cache_dir = "sd-vae-ft-mse-cache"
@@ -23,7 +17,6 @@ os.makedirs(vae_cache_dir, exist_ok=True)
 
 pipe = StableDiffusionPipeline.from_pretrained(
     "runwayml/stable-diffusion-v1-5",
-    torch_dtype=torch.float16,
 )
 
 pipe.save_pretrained(cache_dir)
@@ -31,7 +24,6 @@ pipe.save_pretrained(cache_dir)
 
 pretrained_vae = AutoencoderKL.from_pretrained(
     "stabilityai/sd-vae-ft-mse",
-    torch_dtype=torch.float16,
     subfolder=None,
     revision=None,
 )
