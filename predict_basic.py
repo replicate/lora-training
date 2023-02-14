@@ -10,6 +10,14 @@ from common import (
     get_output_filename,
 )
 
+import torch
+
+torch.backends.cuda.matmul.allow_tf32 = True
+torch.backends.cudnn.allow_tf32 = True
+torch.backends.cudnn.benchmark = True
+
+torch.set_num_threads(4)
+
 
 COMMON_PARAMETERS = {
     "train_text_encoder": True,
