@@ -12,7 +12,7 @@ push-basic: cog-yaml-basic
 
 .PHONY: push-advanced
 push-advanced: cog-yaml-advanced
-	cog push r8.im/votiethuy/lora-advanced-training
+	cog push r8.im/votiethuy/lora-training-advance
 
 .PHONY: push
 push: lint push-basic push-advanced
