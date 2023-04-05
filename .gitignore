@@ -8,3 +8,4 @@ checkpoints
 *.safetensors
 output.zip
 cog.yaml
+NED
