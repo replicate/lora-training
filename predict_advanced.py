@@ -182,7 +182,7 @@ class Predictor(BasePredictor):
 
         # some settings are fixed for the replicate model
         lora_train(
-            pretrained_model_name_or_path="./stable-diffusion-v1-5-cache",
+            pretrained_model_name_or_path="./NED",
             pretrained_vae_name_or_path=None,
             revision=None,
             instance_data_dir=cog_instance_data,
