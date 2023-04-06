@@ -9,4 +9,6 @@ checkpoints
 output.zip
 cog.yaml
 NED
-s3.py
+*.zip
+test.py
+.env
