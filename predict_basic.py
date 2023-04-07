@@ -110,6 +110,7 @@ class Predictor(BasePredictor):
         ),
         upload_url: str = Input(description="Upload URL for upload model", default=None),
         seed: int = Input(description="A seed for reproducible training", default=None),
+        train_batch_size: int = Input(description="train batch size", default=1),
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
             " resolution.",
@@ -125,6 +126,7 @@ class Predictor(BasePredictor):
         clean_directories([cog_instance_data, cog_output_dir])
 
         params = {k: v for k, v in TASK_PARAMETERS[task].items()}
+        COMMON_PARAMETERS['train_batch_size'] = train_batch_size
         params.update(COMMON_PARAMETERS)
         params.update(
             {
