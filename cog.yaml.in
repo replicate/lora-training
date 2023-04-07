@@ -22,5 +22,6 @@ build:
     - "torchvision==0.14.0"
     - "mediapipe==0.9.0.1"
     - "flake8==5.0.4"
+    - "google-cloud-storage==2.8.0"
 
 predict: "$PREDICT_FILE:Predictor"

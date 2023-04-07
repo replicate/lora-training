@@ -12,3 +12,4 @@ NED
 *.zip
 test.py
 .env
+*.json
