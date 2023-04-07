@@ -35,7 +35,6 @@ COMMON_PARAMETERS = {
     "max_train_steps_tuning": 700,
     "placeholder_token_at_data": None,
     "placeholder_tokens": "<s1>",
-    "use_8bit_adam": True,
     "weight_decay_lora": 0.001,
     "weight_decay_ti": 0,
 }
