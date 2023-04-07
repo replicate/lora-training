@@ -15,7 +15,7 @@ from common import (
 
 COMMON_PARAMETERS = {
     "train_text_encoder": True,
-    "train_batch_size": 2,
+    "train_batch_size": 1,
     "gradient_accumulation_steps": 2,
     "gradient_checkpointing": False,
     "lr_scheduler": "constant",
