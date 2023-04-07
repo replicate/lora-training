@@ -16,7 +16,7 @@ from common import (
 COMMON_PARAMETERS = {
     "train_text_encoder": True,
     "train_batch_size": 1,
-    "gradient_accumulation_steps": 2,
+    "gradient_accumulation_steps": 5,
     "gradient_checkpointing": False,
     "lr_scheduler": "constant",
     "scale_lr": True,
@@ -31,10 +31,11 @@ COMMON_PARAMETERS = {
     "learning_rate_unet": 2e-4,
     "lr_scheduler_lora": "constant",
     "lr_warmup_steps_lora": 0,
-    "max_train_steps_ti": 700,
-    "max_train_steps_tuning": 700,
+    "max_train_steps_ti": 1000,
+    "max_train_steps_tuning": 1000,
     "placeholder_token_at_data": None,
-    "placeholder_tokens": "<s1>|<s2>",
+    "placeholder_tokens": "<s1>",
+    "use_8bit_adam": True,
     "weight_decay_lora": 0.001,
     "weight_decay_ti": 0,
 }
@@ -111,6 +112,10 @@ class Predictor(BasePredictor):
         upload_url: str = Input(description="Upload URL for upload model", default=None),
         seed: int = Input(description="A seed for reproducible training", default=None),
         train_batch_size: int = Input(description="train batch size", default=1),
+        placeholder_tokens: str = Input(
+            default="<s1>|<s2>",
+            description="The placeholder tokens to use for the initializer. If not provided, will use the first tokens of the data.",
+        ),
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
             " resolution.",
@@ -127,6 +132,7 @@ class Predictor(BasePredictor):
 
         params = {k: v for k, v in TASK_PARAMETERS[task].items()}
         COMMON_PARAMETERS['train_batch_size'] = train_batch_size
+        COMMON_PARAMETERS['placeholder_tokens'] = placeholder_tokens
         params.update(COMMON_PARAMETERS)
         params.update(
             {
