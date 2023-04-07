@@ -109,7 +109,6 @@ class Predictor(BasePredictor):
             description="Type of LoRA model you want to train",
         ),
         upload_url: str = Input(description="Upload URL for upload model", default=None),
-        upload_path: str = Input(description="Upload Path for upload model", default="lora/training/"),
         seed: int = Input(description="A seed for reproducible training", default=None),
         resolution: int = Input(
             description="The resolution for input images. All the images in the train/validation dataset will be resized to this"
