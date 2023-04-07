@@ -146,5 +146,5 @@ class Predictor(BasePredictor):
         weights_path = Path(cog_output_dir) / f"step_{num_steps}.safetensors"
         output_path = Path(cog_output_dir) / get_output_filename(instance_data)
         weights_path.rename(output_path)
-        upload_file_to_presigned_url(output_path, upload_url, upload_path)
+        upload_file_to_presigned_url(output_path, upload_url)
         return output_path
