@@ -104,7 +104,7 @@ class Predictor(BasePredictor):
         params.update(COMMON_PARAMETERS)
         params.update(
             {
-                "pretrained_model_name_or_path": "./NED",
+                "pretrained_model_name_or_path": "./stable-diffusion-v1-5",
                 "instance_data_dir": cog_instance_data,
                 "output_dir": cog_output_dir,
                 "resolution": resolution,
