@@ -13,3 +13,6 @@ NED
 test.py
 .env
 *.json
+train
+train_data
+stable-diffusion-v1-5
