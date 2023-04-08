@@ -3,7 +3,7 @@
 
 build:
   gpu: true
-  cuda: "11.4"
+  cuda: "11.6"
   python_version: "3.10"
   system_packages:
     - "ffmpeg"
