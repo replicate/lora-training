@@ -58,3 +58,41 @@ imgs = pipe(
 ).images
 ...
 ```
+
+docker pull huggingface/transformers-pytorch-gpu
+
+docker run --rm --gpus all -it \
+   -v /home/votiethuy/diffusers:/home/diffusers \
+   -v /home/votiethuy/lora-training:/home/lora-training \
+   huggingface/transformers-pytorch-gpu
+
+
+python3 /home/diffusers/scripts/convert_original_stable_diffusion_to_diffusers.py --checkpoint_path /home/lora-training/checkpoints/final_lora.safetensors  --dump_path save_dir --from_safetensors
+
+export MODEL_NAME="runwayml/stable-diffusion-v1-5"
+export INSTANCE_DIR="/home/lora-training/train_data/ainn_training"
+export OUTPUT_DIR="/home/lora-training/checkpoints/ainn"
+
+#Dreambooth lora
+accelerate launch train_dreambooth_lora.py \
+  --pretrained_model_name_or_path=$MODEL_NAME  \
+  --instance_data_dir=$INSTANCE_DIR \
+  --output_dir=$OUTPUT_DIR \
+  --instance_prompt="a photo of ain nguyen girl" \
+  --resolution=512 \
+  --train_batch_size=1 \
+  --gradient_accumulation_steps=1 \
+  --checkpointing_steps=100 \
+  --learning_rate=2e-4 \
+  --lr_scheduler="constant" \
+  --lr_warmup_steps=0 \
+  --max_train_steps=700 \
+  --validation_prompt="A photo of ain nguyen girl" \
+  --validation_epochs=50 \
+  --seed="0"
+
+04/08/2023 05:39:47 - INFO - __main__ - Distributed environment: NO
+04/08/2023 05:52:06
+
+Convert to WEBUI format
+python3 convert-to-safetensors.py --file pytorch_lora_weights.bin
