@@ -1,4 +1,4 @@
 accelerate
-diffusers
 safetensors
 bitsandbytes
+auto-crop
