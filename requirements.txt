@@ -1,3 +1,4 @@
 accelerate
 diffusers
 safetensors
+bitsandbytes
