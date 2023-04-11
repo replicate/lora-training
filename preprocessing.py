@@ -5,6 +5,7 @@ from PIL import Image
 from skimage import io
 from face_detection import RetinaFace
 import cv2
+import numpy as np
 
 
 def crop(cropper, image_path):
@@ -68,7 +69,38 @@ def create_square_box_expanded(img, x, y, w, h, size=512):
 
     return new_x, new_y, new_w, new_h
 
-def smart_crop(input_folder, output_folder, target_size=500):
+def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation = inter)
+
+    # return the resized image
+    return resized
+
+def smart_crop(input_folder, output_folder, target_size=738):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
@@ -82,18 +114,19 @@ def smart_crop(input_folder, output_folder, target_size=500):
         box, landmarks, score=face_detector(detector, img_path)
         point1 = (int(box[0]), int(box[1]))
         point2 = (int(box[2]), int(box[3]))
+        # thickness = 2
         new_x, new_y, new_w, new_h= create_square_box_expanded(img, point1[0], point1[1], point2[1]-point1[1],point2[0]-point1[0], target_size)
-        
-        color = (0, 255, 0)
-        thickness = 2
-        cv2.rectangle(img, (new_x, new_y), (new_x + new_w, new_y + new_h), color, thickness)
-        cv2.imwrite(out_img, img)
+        cropped_image = img[new_y:new_y+new_h, new_x:new_x+new_w]
+
+        # print(new_w, new_h)
+        # cv2.rectangle(img, (new_x, new_y), (new_x + new_w, new_y + new_h), (255, 0, 0), thickness)
+        cv2.imwrite(out_img, cropped_image)
         # print(box, score)
 
 def main():
-    input_folder = 'hanabunny_school'
+    input_folder = 'liuyifei'
     output_folder = 'output'
-    target_size = 512
+    target_size = 768
 
     smart_crop(input_folder, output_folder, target_size)
 
