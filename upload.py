@@ -3,6 +3,7 @@ import os
 import logging
 from google.cloud import storage
 from google.oauth2 import service_account
+from hashlib import sha512
 
 def upload_file_to_presigned_url(file_path, signed_url):    
     with open(file_path, 'rb') as file:
@@ -44,23 +45,23 @@ def generate_download_signed_url_v4(bucket_name, blob_name, expiration_time):
     )
     return url
 
+def url_local_fn(url):
+    return sha512(url.encode()).hexdigest() + ".zip"
 
 
-def main():
-    # Replace these values with your own
-    data_bucket_name = '<>'
-    model_bucket_name = 'ghtelpelight-model'
-    file_key = 'model/hanabunny_school.safetensors'
-    expiration_time = 7*24*3600  # Time in seconds; 3600 seconds = 1 hour
-    signed_url = generate_signed_put_url(model_bucket_name, file_key, expiration_time)
-    print("\nSigned PUT URL for uploading a file:")
-    print(signed_url)
-    
-    
-    signed_url = generate_download_signed_url_v4(model_bucket_name, file_key, expiration_time)
-    print("\nSigned GET URL for uploading a file:")
-    print(signed_url)
+def download_file(url):
+    fn = url_local_fn(url)
+    if not os.path.exists(fn):
+        print("Downloading instance data... from", url)
+        # stream chunks of the file to disk
+        with requests.get(url, stream=True) as r:
+            r.raise_for_status()
+            with open(fn, "wb") as f:
+                for chunk in r.iter_content(chunk_size=8192):
+                    f.write(chunk)
 
+    else:
+        print("Using disk cache...")
 
-if __name__ == '__main__':
-    main()
+    return fn
+

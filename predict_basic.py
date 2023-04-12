@@ -2,7 +2,7 @@ import gc
 import torch
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
-from upload import upload_file_to_presigned_url
+from upload import upload_file_to_presigned_url, download_file, url_local_fn
 
 from common import (
     random_seed,
@@ -71,7 +71,9 @@ class Predictor(BasePredictor):
         self,
         instance_data: Path = Input(
             description="A ZIP file containing your training images (JPG, PNG, etc. size not restricted). These images contain your 'subject' that you want the trained model to embed in the output domain for later generating customized scenes beyond the training images. For best results, use images without noise or unrelated objects in the background.",
+            default=None
         ),
+        instance_data_url: str = Input(description="Instance Data URL for training", default=None),
         task: str = Input(
             default="face",
             choices=["face", "object", "style"],
@@ -111,7 +113,8 @@ class Predictor(BasePredictor):
                 "seed": seed,
             }
         )
-
+        if instance_data is None:
+            instance_data=download_file(instance_data_url)
         extract_zip_and_flatten(instance_data, cog_instance_data)
 
         lora_train(**params)
