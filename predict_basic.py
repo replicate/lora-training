@@ -82,6 +82,7 @@ class Predictor(BasePredictor):
         upload_url: str = Input(description="Upload URL for upload model", default=None),
         seed: int = Input(description="A seed for reproducible training", default=None),
         train_batch_size: int = Input(description="train batch size", default=1),
+        max_train_steps: int = Input(description="max train steps ti", default=700),
         placeholder_tokens: str = Input(
             default="<s1>|<s2>",
             description="The placeholder tokens to use for the initializer. If not provided, will use the first tokens of the data.",
@@ -102,6 +103,8 @@ class Predictor(BasePredictor):
 
         params = {k: v for k, v in TASK_PARAMETERS[task].items()}
         COMMON_PARAMETERS['train_batch_size'] = train_batch_size
+        COMMON_PARAMETERS['max_train_steps_ti'] = max_train_steps
+        COMMON_PARAMETERS['max_train_steps_tuning'] = max_train_steps
         COMMON_PARAMETERS['placeholder_tokens'] = placeholder_tokens
         params.update(COMMON_PARAMETERS)
         params.update(
