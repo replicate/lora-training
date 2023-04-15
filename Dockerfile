@@ -6,7 +6,7 @@ RUN pip3 install -r requirements.txt
 
 RUN git clone https://github.com/huggingface/diffusers.git && cd diffusers && pip3 install .
 
-RUN git clone https://github.com/votiethuy/autocrop.git && cd autocrop && pip3 install .
+RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install .
 
 RUN pip3 install git+https://github.com/elliottzheng/face-detection.git@master
 
