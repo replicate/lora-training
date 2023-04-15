@@ -16,6 +16,6 @@ ADD preprocessing.py /preprocessing.py
 
 ADD dreambooth_lora.py /dreambooth_lora.py
 
-ADD train.sh /train.sh
+# ADD train.sh /train.sh
 
-CMD [ "./train.sh" ]
+# CMD [ "./train.sh" ]
