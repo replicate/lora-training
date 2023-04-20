@@ -3,6 +3,7 @@ import torch
 import os
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
+from lora_diffusion.preprocess_files import load_and_save_masks_and_captions
 from upload import upload_file_to_presigned_url, download_file, url_local_fn
 
 from common import (
@@ -127,6 +128,9 @@ class Predictor(BasePredictor):
                 "seed": seed,
             }
         )
+        train_face = task == 'face'
+        load_and_save_masks_and_captions(cog_instance_data, cog_instance_data+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
+        params['instance_data_dir'] = cog_instance_data + "/preprocessing"
         lora_train(**params)
         gc.collect()
         torch.cuda.empty_cache()
