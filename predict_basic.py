@@ -113,7 +113,9 @@ class Predictor(BasePredictor):
         if instance_data is None:
             instance_data=download_file(instance_data_url)
         extract_zip_and_flatten(instance_data, cog_instance_data)
-        using_captions = os.path.isfile("cog_instance_data/caption.txt")
+        train_face = task == 'face'
+        load_and_save_masks_and_captions(cog_instance_data, cog_instance_data+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
+        using_captions = os.path.isfile("cog_instance_data/preprocessing/caption.txt")
         print(f"Using Captions: {using_captions}")
         COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
         if using_captions:
@@ -122,15 +124,12 @@ class Predictor(BasePredictor):
         params.update(
             {
                 "pretrained_model_name_or_path": "./stablediffusion15",
-                "instance_data_dir": cog_instance_data,
+                "instance_data_dir": cog_instance_data + "/preprocessing",
                 "output_dir": cog_output_dir,
                 "resolution": resolution,
                 "seed": seed,
             }
         )
-        train_face = task == 'face'
-        load_and_save_masks_and_captions(cog_instance_data, cog_instance_data+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
-        params['instance_data_dir'] = cog_instance_data + "/preprocessing"
         lora_train(**params)
         gc.collect()
         torch.cuda.empty_cache()
