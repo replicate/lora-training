@@ -108,6 +108,15 @@ class Predictor(BasePredictor):
         COMMON_PARAMETERS['max_train_steps_tuning'] = max_train_steps
         COMMON_PARAMETERS['placeholder_tokens'] = placeholder_tokens
         
+
+        if instance_data is None:
+            instance_data=download_file(instance_data_url)
+        extract_zip_and_flatten(instance_data, cog_instance_data)
+        using_captions = os.path.isfile("cog_instance_data/caption.txt")
+        print(f"Using Captions: {using_captions}")
+        COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
+        if using_captions:
+            COMMON_PARAMETERS['use_template'] = None
         params.update(COMMON_PARAMETERS)
         params.update(
             {
@@ -118,12 +127,6 @@ class Predictor(BasePredictor):
                 "seed": seed,
             }
         )
-        if instance_data is None:
-            instance_data=download_file(instance_data_url)
-        extract_zip_and_flatten(instance_data, cog_instance_data)
-        using_captions = os.path.isfile("cog_instance_data/caption.txt")
-        print(f"Using Captions: {using_captions}")
-        COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
         lora_train(**params)
         gc.collect()
         torch.cuda.empty_cache()
