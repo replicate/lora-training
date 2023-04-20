@@ -1,5 +1,6 @@
 import gc
 import torch
+import os
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
 from upload import upload_file_to_presigned_url, download_file, url_local_fn
@@ -106,6 +107,7 @@ class Predictor(BasePredictor):
         COMMON_PARAMETERS['max_train_steps_ti'] = max_train_steps
         COMMON_PARAMETERS['max_train_steps_tuning'] = max_train_steps
         COMMON_PARAMETERS['placeholder_tokens'] = placeholder_tokens
+        
         params.update(COMMON_PARAMETERS)
         params.update(
             {
@@ -119,12 +121,15 @@ class Predictor(BasePredictor):
         if instance_data is None:
             instance_data=download_file(instance_data_url)
         extract_zip_and_flatten(instance_data, cog_instance_data)
-
+        using_captions = os.path.isfile("cog_instance_data/caption.txt")
+        print(f"Using Captions: {using_captions}")
+        COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
         lora_train(**params)
         gc.collect()
         torch.cuda.empty_cache()
 
         num_steps = COMMON_PARAMETERS["max_train_steps_tuning"]
+        
         weights_path = Path(cog_output_dir) / f"step_{num_steps}.safetensors"
         output_path = Path(cog_output_dir) / get_output_filename(instance_data)
         weights_path.rename(output_path)

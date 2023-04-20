@@ -31,7 +31,7 @@ def extract_zip_and_flatten(zip_path, output_path):
             ):
                 continue
             mt = mimetypes.guess_type(zip_info.filename)
-            if mt and mt[0] and mt[0].startswith("image/"):
+            if mt and mt[0] and (mt[0].startswith("image/") or mt[0].startswith("text/")):
                 zip_info.filename = os.path.basename(zip_info.filename)
                 zip_ref.extract(zip_info, output_path)
 
