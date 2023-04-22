@@ -3,7 +3,7 @@ import torch
 import os
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
-from lora_diffusion.preprocess_files import load_and_save_masks_and_captions
+from preprocessing import load_and_save_masks_and_captions
 from upload import upload_file_to_presigned_url, download_file, url_local_fn
 
 from common import (

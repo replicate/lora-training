@@ -1,7 +1,3 @@
-# Have SwinIR upsample
-# Have BLIP auto caption
-# Have CLIPSeg auto mask concept
-
 from typing import List, Literal, Union, Optional, Tuple
 import os
 from PIL import Image, ImageFilter
