@@ -8,8 +8,6 @@ RUN git clone https://github.com/huggingface/diffusers.git && cd diffusers && pi
 
 RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install .
 
-RUN pip3 install git+https://github.com/elliottzheng/face-detection.git@master
-
 ADD convert-to-safetensors.py /convert-to-safetensors.py
 
 ADD preprocessing.py /preprocessing.py
