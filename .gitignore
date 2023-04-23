@@ -1,5 +1,6 @@
 cog_class_data
 cog_instance_data
+instance_data
 *-cache
 __debug*
 __pycache__
