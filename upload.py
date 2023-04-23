@@ -68,7 +68,7 @@ def download_file(url):
 def main():
     # Replace these values with your own
     model_bucket_name = 'ghtelpelight-model'
-    file_key = 'model/meenfoxharry.safetensors'
+    file_key = 'model/ainn.safetensors'
     expiration_time = 7*24*3600  # Time in seconds; 3600 seconds = 1 hour
     up_signed_url = generate_signed_put_url(model_bucket_name, file_key, expiration_time)
     print("\nSigned PUT URL for uploading a file:")
@@ -80,7 +80,7 @@ def main():
     print(signed_url)
     # instance_data=download_file("https://s3.tebi.io/celeb-ai/1_abc/1/photo.zip?AWSAccessKeyId=k2lEbqt2v8pLTl8H&Signature=AwvXvXxBAwi3G%2FNM8UaPEjt7cRM%3D&Expires=1681379163")
     # print(instance_data)
-    upload_file_to_presigned_url("final_lora.safetensors",up_signed_url)
+    # upload_file_to_presigned_url("ainn_training.zip",up_signed_url)
 
 
 if __name__ == '__main__':

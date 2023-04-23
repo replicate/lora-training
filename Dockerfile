@@ -10,6 +10,8 @@ RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install
 
 ADD convert-to-safetensors.py /convert-to-safetensors.py
 
+ADD upload.py /upload.py
+
 ADD preprocessing.py /preprocessing.py
 
 ADD dreambooth_lora.py /dreambooth_lora.py
