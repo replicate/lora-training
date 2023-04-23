@@ -12,6 +12,8 @@ ADD convert-to-safetensors.py /convert-to-safetensors.py
 
 ADD upload.py /upload.py
 
+ADD common.py /common.py
+
 ADD preprocessing.py /preprocessing.py
 
 ADD dreambooth_lora.py /dreambooth_lora.py

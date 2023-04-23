@@ -1,3 +1,4 @@
 accelerate
 safetensors
 gcloud
+google-cloud-storage
