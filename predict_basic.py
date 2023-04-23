@@ -1,6 +1,7 @@
 import gc
 import torch
 import os
+import re
 from cog import BasePredictor, Input, Path
 from lora_diffusion.cli_lora_pti import train as lora_train
 from preprocessing import load_and_save_masks_and_captions
@@ -10,9 +11,12 @@ from common import (
     random_seed,
     clean_directories,
     extract_zip_and_flatten,
-    get_output_filename,
 )
 
+
+def get_output_filename(input_filename):
+    temp_name = Path(input_filename).name
+    return Path(re.sub("[^-a-zA-Z0-9_]", "", temp_name)).with_suffix(".safetensors")
 
 COMMON_PARAMETERS = {
     "train_text_encoder": True,
