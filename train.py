@@ -11,7 +11,6 @@ from common import (
     extract_zip_and_flatten,
 )
 
-
 COMMON_PARAMETERS = {
     "train_text_encoder": True,
     "train_batch_size": 1,
@@ -74,20 +73,19 @@ def main():
     train_batch_size = os.getenv("train_batch_size", 1)
     placeholder_tokens = os.getenv("placeholder_tokens", "<s1>")
     max_train_steps = os.getenv("max_train_steps", 700)
-    cog_instance_data = "cog_instance_data"
-    cog_output_dir = "checkpoints"
-    clean_directories([cog_instance_data, cog_output_dir])
+    instance_data_folder = os.getenv("instance_data","instance_data")
+    output_dir = os.getenv("output_dir", "checkpoints")
+    clean_directories([instance_data_folder, output_dir])
     params = {k: v for k, v in TASK_PARAMETERS[task].items()}
     COMMON_PARAMETERS['train_batch_size'] = train_batch_size
     COMMON_PARAMETERS['max_train_steps_ti'] = max_train_steps
     COMMON_PARAMETERS['max_train_steps_tuning'] = max_train_steps
     COMMON_PARAMETERS['placeholder_tokens'] = placeholder_tokens
     
-    if instance_data is None:
-        instance_data=download_file(instance_data_url)
-    extract_zip_and_flatten(instance_data, cog_instance_data)
+    instance_data=download_file(instance_data_url)
+    extract_zip_and_flatten(instance_data, instance_data_folder)
     train_face = task == 'face'
-    load_and_save_masks_and_captions(cog_instance_data, cog_instance_data+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
+    load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
     using_captions = os.path.isfile("cog_instance_data/preprocessing/caption.txt")
     print(f"Using Captions: {using_captions}")
     COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
@@ -98,8 +96,8 @@ def main():
     params.update(
         {
             "pretrained_model_name_or_path": "./stablediffusion15",
-            "instance_data_dir": cog_instance_data + "/preprocessing",
-            "output_dir": cog_output_dir,
+            "instance_data_dir": instance_data_folder + "/preprocessing",
+            "output_dir": output_dir,
             "resolution": resolution,
             "seed": seed,
         }
@@ -108,7 +106,7 @@ def main():
     gc.collect()
     torch.cuda.empty_cache()
     
-    output_path = cog_output_dir+ "/final_lora.safetensors"
+    output_path = output_dir+ "/final_lora.safetensors"
     upload_file_to_presigned_url(output_path, upload_url)
 
 if __name__ == '__main__':
