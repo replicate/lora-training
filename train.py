@@ -86,7 +86,7 @@ def main():
     extract_zip_and_flatten(instance_data, instance_data_folder)
     train_face = task == 'face'
     load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing",caption_text=placeholder_tokens,target_size=resolution, use_face_detection_instead=train_face)
-    using_captions = os.path.isfile("cog_instance_data/preprocessing/caption.txt")
+    using_captions = os.path.isfile(instance_data_folder+"/preprocessing/caption.txt")
     print(f"Using Captions: {using_captions}")
     COMMON_PARAMETERS['use_mask_captioned_data'] = using_captions
     if using_captions:
