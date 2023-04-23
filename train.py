@@ -95,7 +95,7 @@ def main():
     seed = random_seed()
     params.update(
         {
-            "pretrained_model_name_or_path": "./stablediffusion15",
+            "pretrained_model_name_or_path": "runwayml/stable-diffusion-v1-5",
             "instance_data_dir": instance_data_folder + "/preprocessing",
             "output_dir": output_dir,
             "resolution": resolution,
