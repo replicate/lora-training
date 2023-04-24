@@ -22,4 +22,4 @@ ADD train.sh /train.sh
 
 ADD train.py train.py
 
-# CMD [ "./train.sh" ]
+CMD [ "./train.sh" ]
