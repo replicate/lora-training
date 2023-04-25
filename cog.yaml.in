@@ -15,7 +15,7 @@ build:
     - "ftfy==6.1.1"
     - "scipy==1.9.3"
     - "transformers==4.28.1"
-    - "accelerate==0.15.0"
+    - "accelerate==0.18.0"
     - "safetensors==0.3.0"
     - "git+https://github.com/cloneofsimo/lora.git@bdd51b04c49fa90a88919a19850ec3b4cf3c5ecd"
     - "opencv-python==4.7.0.68"
