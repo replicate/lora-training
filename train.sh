@@ -1,5 +1,3 @@
 #!/bin/bash
 
-accelerate config default
-
-accelerate launch train.py
+python3 train.py
