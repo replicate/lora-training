@@ -105,8 +105,8 @@ def main():
     lora_train(**params)
     gc.collect()
     torch.cuda.empty_cache()
-    
-    output_path = output_dir+ "/final_lora.safetensors"
+    num_steps = COMMON_PARAMETERS["max_train_steps_tuning"]
+    output_path = output_dir+ f"/step_{num_steps}.safetensors"
     upload_file_to_presigned_url(output_path, upload_url)
 
 if __name__ == '__main__':
