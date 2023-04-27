@@ -113,10 +113,10 @@ def main():
     upload_file_to_presigned_url("final_lora.safetensors",up_signed_url)
 
 def download_data():
-    instance_data_url = os.getenv("instance_data_url")
-    instance_data_folder = os.getenv("instance_data","instance_data")
-    output_dir = os.getenv("output_dir", "checkpoints")
-    resolution = int(os.getenv("resolution", 512))
+    instance_data_url = os.getenv("DATA_URL")
+    instance_data_folder = os.getenv("INSTANCE_DIR")
+    output_dir = os.getenv("OUTPUT_DIR", "checkpoints")
+    resolution = int(os.getenv("RESOLUTION", 512))
     clean_directories([instance_data_folder, output_dir])
     instance_data=download_file(instance_data_url)
     extract_zip_and_flatten(instance_data, instance_data_folder)
