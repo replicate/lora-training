@@ -18,7 +18,7 @@ accelerate launch dreambooth_lora.py \
   --learning_rate=2e-4 \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
-  --max_train_steps=500 \
+  --max_train_steps=$STEP \
   --validation_prompt="ainn" \
   --validation_epochs=100 \
   --seed="0"
