@@ -1,5 +1,7 @@
 FROM huggingface/transformers-pytorch-gpu
 
+RUN apt-get update -y && apt-get install -y vim
+
 ADD requirements.txt ./requirements.txt
 
 RUN pip3 install -r requirements.txt

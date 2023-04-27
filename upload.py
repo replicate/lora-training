@@ -4,6 +4,10 @@ import logging
 from google.cloud import storage
 from google.oauth2 import service_account
 from hashlib import sha512
+from preprocessing import load_and_save_masks_and_captions
+import shutil
+import mimetypes
+from zipfile import ZipFile
 
 def upload_file_to_presigned_url(file_path, signed_url):    
     with open(file_path, 'rb') as file:
@@ -65,6 +69,34 @@ def download_file(url):
 
     return fn
 
+def clean_directory(path):
+    if os.path.exists(path):
+        shutil.rmtree(path)
+    os.makedirs(path)
+
+
+def clean_directories(paths):
+    for path in paths:
+        clean_directory(path)
+
+
+def random_seed():
+    return int.from_bytes(os.urandom(2), "big")
+
+
+def extract_zip_and_flatten(zip_path, output_path):
+    # extract zip contents, flattening any paths present within it
+    with ZipFile(str(zip_path), "r") as zip_ref:
+        for zip_info in zip_ref.infolist():
+            if zip_info.filename[-1] == "/" or zip_info.filename.startswith(
+                "__MACOSX"
+            ):
+                continue
+            mt = mimetypes.guess_type(zip_info.filename)
+            if mt and mt[0] and (mt[0].startswith("image/") or mt[0].startswith("text/")):
+                zip_info.filename = os.path.basename(zip_info.filename)
+                zip_ref.extract(zip_info, output_path)
+
 def main():
     # Replace these values with your own
     model_bucket_name = 'ghtelpelight-model'
@@ -78,10 +110,19 @@ def main():
     signed_url = generate_download_signed_url_v4(model_bucket_name, file_key, expiration_time)
     print("\nSigned GET URL for download a file:")
     print(signed_url)
-    # instance_data=download_file("https://s3.tebi.io/celeb-ai/1_abc/1/photo.zip?AWSAccessKeyId=k2lEbqt2v8pLTl8H&Signature=AwvXvXxBAwi3G%2FNM8UaPEjt7cRM%3D&Expires=1681379163")
-    # print(instance_data)
-    # upload_file_to_presigned_url("ainn_training.zip",up_signed_url)
+    upload_file_to_presigned_url("final_lora.safetensors",up_signed_url)
 
+def download_data():
+    instance_data_url = os.getenv("instance_data_url")
+    instance_data_folder = os.getenv("instance_data","instance_data")
+    output_dir = os.getenv("output_dir", "checkpoints")
+    resolution = int(os.getenv("resolution", 512))
+    clean_directories([instance_data_folder, output_dir])
+    instance_data=download_file(instance_data_url)
+    extract_zip_and_flatten(instance_data, instance_data_folder)
+    load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=False)
+
+    
 
 if __name__ == '__main__':
     main()
