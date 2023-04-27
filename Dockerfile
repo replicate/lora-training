@@ -20,6 +20,8 @@ ADD dreambooth_lora.py /dreambooth_lora.py
 
 ADD train.sh /train.sh
 
-ADD train.py train.py
+ADD train.py /train.py
 
-CMD [ "./train.sh" ]
+ADD inference_dreambooth_lora.py /inference_dreambooth_lora.py
+
+# CMD [ "./train.sh" ]
