@@ -1,10 +1,8 @@
 #!/bin/bash
 
-export MODEL_NAME="runwayml/stable-diffusion-v1-5"
-export INSTANCE_DIR="/home/lora-training/instance_data/"
-export OUTPUT_DIR="/home/lora-training/checkpoints"
-export TRIGGER_WORD="ainn"
+python3 upload.py
 
+rm -rf $INSTANCE_DIR/preprocessing/captions.txt
 
 accelerate config default
 #Dreambooth lora
