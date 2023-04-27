@@ -26,4 +26,4 @@ ADD train.py /train.py
 
 ADD inference_dreambooth_lora.py /inference_dreambooth_lora.py
 
-# CMD [ "./train.sh" ]
+CMD [ "./train.sh" ]
