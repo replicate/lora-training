@@ -2,7 +2,7 @@
 
 python3 upload.py
 
-rm -rf $INSTANCE_DIR/preprocessing/captions.txt
+rm -rf $INSTANCE_DIR/preprocessing/caption.txt
 
 accelerate config default
 #Dreambooth lora
