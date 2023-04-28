@@ -19,7 +19,8 @@ def test_and_upload():
     
     prompt = "A picture of {}, with the cherry blossoms falling from the tree, winter forest, natural skin texture, 24mm, 4k textures, soft cinematic light, adobe lightroom, photolab, hdr, intricate, elegant, highly detailed, sharp focus, ((((cinematic look)))), soothing tones, insane details, intricate details, hyperdetailed, low contrast, soft cinematic light, dim colors, exposure blend, hdr, faded".format(trigger_word)
     negative_prompt = "(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation"
-    image = pipe(prompt, negative_prompt, num_inference_steps=25).images[0]
+    image = pipe(prompt=prompt, negative_prompt=negative_prompt, width=512,
+                    height=768, num_inference_steps=25).images[0]
     img_path = "/tmp/out-1.png"
     image.save(img_path)
     upload_file_to_presigned_url(file_safetensors,upload_url)
