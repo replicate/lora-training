@@ -5,4 +5,4 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Docker Build"
-    - docker build -t telpelight/celeb/lora-training:latest .
+    - docker build -t telpelight/sd-training:latest .
