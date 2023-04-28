@@ -21,7 +21,7 @@ def test_and_upload():
     negative_prompt = "(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation"
     image = pipe(prompt=prompt, negative_prompt=negative_prompt, width=512,
                     height=768, num_inference_steps=25).images[0]
-    img_path = "/tmp/out-1.png"
+    img_path = output_dir + "/out-1.png"
     image.save(img_path)
     upload_file_to_presigned_url(file_safetensors,upload_url)
 
