@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python3 upload.py
+python3 file_manager.py
 
 rm -rf $INSTANCE_DIR/preprocessing/caption.txt
 
@@ -23,4 +23,4 @@ accelerate launch dreambooth_lora.py \
   --validation_epochs=100 \
   --seed="0"
 
-python3 inference_dreambooth_lora.py
+python3 evaluate.py

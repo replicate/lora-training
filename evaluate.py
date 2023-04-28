@@ -1,7 +1,7 @@
 from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import torch
 import os
-from upload import upload_file_to_presigned_url
+from file_manager import upload_file_to_presigned_url
 from safetensors.torch import save_file
 
 def test_and_upload():
