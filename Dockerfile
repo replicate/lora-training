@@ -12,9 +12,7 @@ RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install
 
 ADD convert-to-safetensors.py /convert-to-safetensors.py
 
-ADD upload.py /upload.py
-
-ADD common.py /common.py
+ADD file_manager.py /file_manager.py
 
 ADD preprocessing.py /preprocessing.py
 
@@ -24,6 +22,6 @@ ADD train.sh /train.sh
 
 ADD train.py /train.py
 
-ADD inference_dreambooth_lora.py /inference_dreambooth_lora.py
+ADD evaluate.py /evaluate.py
 
 CMD [ "./train.sh" ]
