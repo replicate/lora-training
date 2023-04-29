@@ -33,3 +33,5 @@ accelerate launch dreambooth_lora.py \
   --seed="0"
 
 python3 evaluate.py
+
+python3 convert-to-safetensors.py --file ${OUTPUT_DIR}/pytorch_lora_weights.bin
