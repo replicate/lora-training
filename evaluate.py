@@ -8,11 +8,12 @@ def test_and_upload():
     trigger_word = os.getenv("TRIGGER_WORD")
     output_dir = os.getenv("OUTPUT_DIR")
     upload_url = os.getenv("UPLOAD_URL")
+    modelid = os.getenv("MODEL_NAME")
     file_path = output_dir+"/pytorch_lora_weights.bin"
     pt_state_dict = torch.load(file_path)
     file_safetensors = output_dir+"/pytorch_lora_weights.safetensors"
     save_file(pt_state_dict, file_safetensors, metadata={"format": "pt"})
-    pipe = DiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5", torch_dtype=torch.float16)
+    pipe = DiffusionPipeline.from_pretrained(modelid, torch_dtype=torch.float16)
     pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
     pipe.to("cuda")
     pipe.load_attn_procs(output_dir)
