@@ -1,10 +1,11 @@
 #!/bin/bash
 
 echo "Trigger word: ${TRIGGER_WORD}"
+echo "Preprocessing ${PREPROCESSING}"
 
 python3 file_manager.py
 
-if [ "$PREPROCECSSING" = "1" ]; then
+if [ "$PREPROCESSING" = "1" ]; then
     export INSTANCE_DIR=$INSTANCE_DIR/preprocessing
     rm -rf $INSTANCE_DIR/preprocessing/caption.txt
 fi

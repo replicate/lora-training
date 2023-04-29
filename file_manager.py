@@ -117,7 +117,7 @@ def download_data():
     instance_data_folder = os.getenv("INSTANCE_DIR")
     output_dir = os.getenv("OUTPUT_DIR", "checkpoints")
     resolution = int(os.getenv("RESOLUTION", 512))
-    enable_preprocessing = int(os.getenv("PREPROCECSSING", "0")) == 1
+    enable_preprocessing = int(os.getenv("PREPROCESSING", "0")) == 1
     use_face = int(os.getenv("FACE", "0")) == 1
     clean_directories([instance_data_folder, output_dir])
     instance_data=download_file(instance_data_url)
