@@ -6,8 +6,8 @@ echo "Preprocessing ${PREPROCESSING}"
 python3 file_manager.py
 
 if [ "$PREPROCESSING" = "1" ]; then
-    export INSTANCE_DIR=$INSTANCE_DIR/preprocessing
-    rm -rf $INSTANCE_DIR/preprocessing/caption.txt
+    export INSTANCE_DIR=${INSTANCE_DIR}/preprocessing
+    rm -rf ${INSTANCE_DIR}/caption.txt
 fi
 
 echo $INSTANCE_DIR
