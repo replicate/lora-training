@@ -4,13 +4,18 @@ echo "Trigger word: ${TRIGGER_WORD}"
 
 python3 file_manager.py
 
-rm -rf $INSTANCE_DIR/preprocessing/caption.txt
+if [ "$PREPROCECSSING" = "1" ]; then
+    export INSTANCE_DIR=$INSTANCE_DIR/preprocessing
+    rm -rf $INSTANCE_DIR/preprocessing/caption.txt
+fi
+
+echo $INSTANCE_DIR
 
 accelerate config default
 #Dreambooth lora
 accelerate launch dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME  \
-  --instance_data_dir=$INSTANCE_DIR/preprocessing \
+  --instance_data_dir=$INSTANCE_DIR \
   --output_dir=$OUTPUT_DIR \
   --instance_prompt="${TRIGGER_WORD}" \
   --resolution=512 \

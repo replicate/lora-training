@@ -117,10 +117,13 @@ def download_data():
     instance_data_folder = os.getenv("INSTANCE_DIR")
     output_dir = os.getenv("OUTPUT_DIR", "checkpoints")
     resolution = int(os.getenv("RESOLUTION", 512))
+    enable_preprocessing = int(os.getenv("PREPROCECSSING", "0")) == 1
     clean_directories([instance_data_folder, output_dir])
     instance_data=download_file(instance_data_url)
     extract_zip_and_flatten(instance_data, instance_data_folder)
-    load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=False)
+    if enable_preprocessing:
+        load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=False)
+
 
     
 
