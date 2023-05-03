@@ -48,6 +48,8 @@ accelerate launch dreambooth.py \
   --learning_rate=2e-6 \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
+  --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS},sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
+  --validation_epochs=100 \
   --num_class_images=200 \
   --max_train_steps=800
 
