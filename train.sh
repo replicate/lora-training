@@ -40,7 +40,7 @@ accelerate launch dreambooth.py \
   --class_data_dir=$CLASS_DIR \
   --output_dir=$OUTPUT_DIR \
   --with_prior_preservation --prior_loss_weight=1.0 \
-  --instance_prompt="a photo of ${TRIGGER_WORD}" \
+  --instance_prompt="a photo of ${TRIGGER_WORD} ${CLASS}" \
   --class_prompt="a photo of ${CLASS}" \
   --resolution=512 \
   --train_batch_size=1 \
@@ -50,7 +50,6 @@ accelerate launch dreambooth.py \
   --lr_warmup_steps=0 \
   --use_8bit_adam \
   --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS},sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
-  --validation_epochs=100 \
   --num_class_images=200 \
   --max_train_steps=800
 
