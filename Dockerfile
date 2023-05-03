@@ -2,6 +2,8 @@ FROM huggingface/transformers-pytorch-gpu
 
 RUN apt-get update -y && apt-get install -y vim
 
+RUN git clone https://github.com/tobecwb/stable-diffusion-Regularization-Images.git
+
 ADD requirements.txt ./requirements.txt
 
 RUN pip3 install -r requirements.txt
