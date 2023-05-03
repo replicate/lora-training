@@ -20,6 +20,8 @@ ADD preprocessing.py /preprocessing.py
 
 ADD dreambooth_lora.py /dreambooth_lora.py
 
+ADD dreambooth.py /dreambooth.py
+
 ADD train.sh /train.sh
 
 ADD train.py /train.py
