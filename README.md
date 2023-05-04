@@ -35,3 +35,8 @@ docker run --rm --gpus all -it \
   -e DATA_URL="<presigned_url>" \
   -e UPLOAD_URL="<presigned_url>" \
   dreambooth:latest
+
+
+gcloud batch jobs submit lora-train-job-gpu \
+  --location us-central1 \
+  --config container-job-gpu.json
