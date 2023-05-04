@@ -23,6 +23,7 @@ accelerate launch dreambooth_lora.py \
   --class_prompt="a photo of ${CLASS}" \
   --class_data_dir=$CLASS_DIR \
   --num_class_images=200 \
+  --train_text_encoder \
   --resolution=512 \
   --train_batch_size=1 \
   --gradient_accumulation_steps=1 \
