@@ -9,6 +9,9 @@ docker run --rm --gpus all -it \
   -e INSTANCE_DIR="/home/lora-training/instance_data" \
   -e OUTPUT_DIR="/home/lora-training/checkpoints" \
   -e TRIGGER_WORD="telpelight" \
+  -e TRIGGER_WORD="banthao" \
+  -e CLASS="woman" \
+  -e CLASS_DIR="./stable-diffusion-Regularization-Images/sd1.5/woman" \
   -e STEP=2500 \
   -e PREPROCESSING=1 \
   -e FACE=1 \
