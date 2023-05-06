@@ -55,4 +55,3 @@ if [ -n "$VAST_CONTAINERLABEL" ]; then
   cat ~/.ssh/authorized_keys | md5sum | awk '{print $1}' > ssh_key_hv; echo -n $VAST_CONTAINERLABEL | md5sum | awk '{print $1}' > instance_id_hv; head -c -1 -q ssh_key_hv instance_id_hv > ~/.vast_api_key; 
   ./vast destroy instance ${VAST_CONTAINERLABEL:2} 
 fi
-```
