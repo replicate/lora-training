@@ -97,21 +97,6 @@ def extract_zip_and_flatten(zip_path, output_path):
                 zip_info.filename = os.path.basename(zip_info.filename)
                 zip_ref.extract(zip_info, output_path)
 
-def main():
-    # Replace these values with your own
-    model_bucket_name = 'ghtelpelight-model'
-    file_key = 'model/xxxx.safetensors'
-    expiration_time = 7*24*3600  # Time in seconds; 3600 seconds = 1 hour
-    up_signed_url = generate_signed_put_url(model_bucket_name, file_key, expiration_time)
-    print("\nSigned PUT URL for uploading a file:")
-    print(up_signed_url)
-    
-    
-    signed_url = generate_download_signed_url_v4(model_bucket_name, file_key, expiration_time)
-    print("\nSigned GET URL for download a file:")
-    print(signed_url)
-    # upload_file_to_presigned_url("xxxx.safetensors",up_signed_url)
-
 def download_data():
     instance_data_url = os.getenv("DATA_URL")
     instance_data_folder = os.getenv("INSTANCE_DIR")
