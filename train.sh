@@ -3,11 +3,14 @@
 echo "Trigger word: ${TRIGGER_WORD}"
 echo "Trigger word: ${CLASS}"
 echo "Preprocessing ${PREPROCESSING}"
-
-DATA_URL=$(echo "$DATA_URL" | base64 -d)
-UPLOAD_URL=$(echo "$UPLOAD_URL" | base64 -d)
+padding_needed=$(( (4 - ${#DATA_URL} % 4) % 4 ))
+encoded_string_with_padding="${DATA_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
+DATA_URL=$(echo "$encoded_string_with_padding" | base64 -d)
 echo "DATA URL: ${DATA_URL}"
 
+padding_needed=$(( (4 - ${#UPLOAD_URL} % 4) % 4 ))
+encoded_string_with_padding="${UPLOAD_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
+UPLOAD_URL=$(echo "$encoded_string_with_padding" | base64 -d)
 echo "Upload URL: ${UPLOAD_URL}"
 
 python3 file_manager.py
