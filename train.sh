@@ -4,6 +4,12 @@ echo "Trigger word: ${TRIGGER_WORD}"
 echo "Trigger word: ${CLASS}"
 echo "Preprocessing ${PREPROCESSING}"
 
+DATA_URL=$(echo "$DATA_URL" | base64 -d)
+UPLOAD_URL=$(echo "$UPLOAD_URL" | base64 -d)
+echo "DATA URL: ${DATA_URL}"
+
+echo "Upload URL: ${UPLOAD_URL}"
+
 python3 file_manager.py
 
 if [ "$PREPROCESSING" = "1" ]; then
@@ -36,26 +42,6 @@ accelerate launch dreambooth_lora.py \
   --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS}, sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
   --validation_epochs=100 \
   --seed="0"
-
-# accelerate launch dreambooth.py \
-#   --pretrained_model_name_or_path=$MODEL_NAME  \
-#   --train_text_encoder \
-#   --instance_data_dir=$INSTANCE_DIR \
-#   --class_data_dir=$CLASS_DIR \
-#   --output_dir=$OUTPUT_DIR \
-#   --with_prior_preservation --prior_loss_weight=1.0 \
-#   --instance_prompt="a photo of ${TRIGGER_WORD} ${CLASS}" \
-#   --class_prompt="a photo of ${CLASS}" \
-#   --resolution=512 \
-#   --train_batch_size=1 \
-#   --gradient_checkpointing \
-#   --learning_rate=2e-6 \
-#   --lr_scheduler="constant" \
-#   --lr_warmup_steps=0 \
-#   --use_8bit_adam \
-#   --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS},sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
-#   --num_class_images=200 \
-#   --max_train_steps=800
 
 python3 evaluate.py
 
