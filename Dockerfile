@@ -1,8 +1,10 @@
 FROM huggingface/transformers-pytorch-gpu
 
-RUN apt-get update -y && apt-get install -y vim
+RUN apt-get update -y && apt-get install -y vim wget
 
 RUN git clone https://github.com/tobecwb/stable-diffusion-Regularization-Images.git
+
+RUN wget https://raw.githubusercontent.com/vast-ai/vast-python/master/vast.py -O vast; chmod +x vast; 
 
 ADD requirements.txt ./requirements.txt
 

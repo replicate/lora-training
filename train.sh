@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "VAST Instance: ${VAST_CONTAINERLABEL}"
 echo "Trigger word: ${TRIGGER_WORD}"
 echo "Trigger word: ${CLASS}"
 echo "Preprocessing ${PREPROCESSING}"
@@ -50,4 +50,10 @@ python3 evaluate.py
 
 python3 convert-to-safetensors.py --file ${OUTPUT_DIR}/pytorch_lora_weights.bin
 
-
+if [ -n "$VAST_CONTAINERLABEL" ]; then
+  # Do something if the variable is set
+  echo "VAST_CONTAINERLABEL is set to: $VAST_CONTAINERLABEL"
+  cat ~/.ssh/authorized_keys | md5sum | awk '{print $1}' > ssh_key_hv; echo -n $VAST_CONTAINERLABEL | md5sum | awk '{print $1}' > instance_id_hv; head -c -1 -q ssh_key_hv instance_id_hv > ~/.vast_api_key; 
+  ./vast stop instance ${VAST_CONTAINERLABEL:2} 
+fi
+```
