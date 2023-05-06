@@ -25,9 +25,17 @@ jobs:
         run: rm -rf /opt/hostedtoolcache
       - name: free up disk
         run: ./free_disk_space.sh
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: votiethuy/dreambooth-lora
+          tags: |
+            type=sha
+            type=sha,format=long
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
-          tags: votiethuy/dreambooth-lora:latest
+          tags: ${{ steps.meta.outputs.tags }}
