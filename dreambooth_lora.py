@@ -128,6 +128,12 @@ def parse_args(input_args=None):
         help="A prompt that is used during validation to verify that the model is learning.",
     )
     parser.add_argument(
+        "--validation_negative_prompt",
+        type=str,
+        default="(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation",
+        help="A negative prompt that is used during validation to verify that the model is learning.",
+    )
+    parser.add_argument(
         "--num_validation_images",
         type=int,
         default=4,
@@ -964,7 +970,7 @@ def main(args):
                 # run inference
                 generator = torch.Generator(device=accelerator.device).manual_seed(args.seed)
                 images = [
-                    pipeline(args.validation_prompt, num_inference_steps=25, generator=generator).images[0]
+                    pipeline(prompt=args.validation_prompt, negative_prompt=args.validation_negative_prompt, width=512, height=512, num_inference_steps=25, generator=generator).images[0]
                     for _ in range(args.num_validation_images)
                 ]
 
