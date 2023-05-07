@@ -1017,7 +1017,7 @@ def main(args):
         if args.validation_prompt and args.num_validation_images > 0:
             generator = torch.Generator(device=accelerator.device).manual_seed(args.seed) if args.seed else None
             images = [
-                pipeline(args.validation_prompt, num_inference_steps=25, generator=generator).images[0]
+                pipeline(prompt=args.validation_prompt, negative_prompt=args.validation_negative_prompt, width=512, height=512, num_inference_steps=25, generator=generator).images[0]
                 for _ in range(args.num_validation_images)
             ]
 
