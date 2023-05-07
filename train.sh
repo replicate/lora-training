@@ -41,6 +41,7 @@ accelerate launch dreambooth_lora.py \
   --max_train_steps=$STEP \
   --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS}, sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
   --validation_epochs=100 \
+  --validation_negative_prompt="(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation" \
   --seed="0"
 
 python3 evaluate.py
