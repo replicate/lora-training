@@ -30,4 +30,6 @@ ADD train.py /train.py
 
 ADD evaluate.py /evaluate.py
 
+ADD report.py /report.py
+
 CMD [ "./train.sh" ]

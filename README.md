@@ -32,3 +32,17 @@ docker run --rm --gpus all -it \
   -e DATA_URL="<presigned_url>" \
   -e UPLOAD_URL="<presigned_url>" \
   dreambooth:latest
+
+hiện tại em gửi qua `REPORT_URL` và `REPORT_TOKEN`
+
+chắc là success cũng report luôn
+success va fail
+
+curl --location 'https://creamyai.com/api/trainings/report/130' \
+--header 'Authorization: Bearer ABC' \
+--header 'Content-Type: application/json' \
+--data '{
+    "status": "success",
+    "message": "image cannot be loaded",
+    "error_code": "download_failed"
+}'

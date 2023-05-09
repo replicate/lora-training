@@ -8,17 +8,20 @@ from preprocessing import load_and_save_masks_and_captions
 import shutil
 import mimetypes
 from zipfile import ZipFile
+from report import send_training_report
 
 def upload_file_to_presigned_url(file_path, signed_url):    
     with open(file_path, 'rb') as file:
         headers = {'Content-Type': 'application/octet-stream'}
         response = requests.put(signed_url, data=file, headers=headers)
-
     if response.status_code == 200:
         print("File uploaded successfully.")
         return True
     else:
+        data = {"status": "fail","message": f"Unexpected error: {response.text}", "error_code": "upload_model_error"}
+        send_training_report(data)
         print(f"File upload failed: {response.text}")
+
         return False
 
 def generate_signed_put_url(bucket_name, blob_name, expiration):
@@ -55,17 +58,17 @@ def url_local_fn(url):
 
 def download_file(url):
     fn = url_local_fn(url)
-    if not os.path.exists(fn):
-        print("Downloading instance data... from", url)
-        # stream chunks of the file to disk
+    print("Downloading instance data... from", url)
+    # stream chunks of the file to disk
+    try:
         with requests.get(url, stream=True) as r:
             r.raise_for_status()
             with open(fn, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
-
-    else:
-        print("Using disk cache...")
+    except Exception as error:
+        data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "download_data_error"}
+        send_training_report(data)
 
     return fn
 
@@ -108,10 +111,18 @@ def download_data():
     instance_data=download_file(instance_data_url)
     extract_zip_and_flatten(instance_data, instance_data_folder)
     if enable_preprocessing:
-        load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=use_face)
+        try:
+            load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=use_face)
+        except Exception as error:
+            data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "preprocessing_error"}
+            send_training_report(data)
 
 
     
 
 if __name__ == '__main__':
-    download_data()
+    try:
+        download_data()
+    except Exception as error:
+        data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "download_error"}
+        send_training_report(data)

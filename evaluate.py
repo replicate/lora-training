@@ -3,7 +3,7 @@ import torch
 import os
 from file_manager import upload_file_to_presigned_url
 from safetensors.torch import save_file
-
+from report import send_training_report
 def test_and_upload():
     trigger_word = os.getenv("TRIGGER_WORD")
     output_dir = os.getenv("OUTPUT_DIR")
@@ -27,4 +27,8 @@ def test_and_upload():
     upload_file_to_presigned_url(file_safetensors,upload_url)
 
 if __name__ == '__main__':
-    test_and_upload()
+    try:
+        test_and_upload()
+    except Exception as error:
+        data = {"status": "fail", "message": f"Unexpected error: {error}", "error_code": "unexpected_error"}
+        send_training_report(data)
