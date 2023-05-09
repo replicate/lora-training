@@ -5,6 +5,7 @@ echo "Trigger word: ${CLASS}"
 echo "Preprocessing ${PREPROCESSING}"
 echo "REPORT_URL ${REPORT_URL}"
 echo "REPORT_TOKEN ${REPORT_TOKEN}"
+echo "RUNNER_NAME ${RUNNER_NAME}"
 
 padding_needed=$(( (4 - ${#DATA_URL} % 4) % 4 ))
 encoded_string_with_padding="${DATA_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
