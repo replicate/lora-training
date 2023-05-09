@@ -1060,5 +1060,5 @@ if __name__ == "__main__":
     try:
         main(args)
     except Exception as error:
-        data = {"status": "fail", "message": f"Unexpected error: {error}", "error_code": "train_unexpected_error"}
+        data = {"status": "fail", "message": f"{error}", "error_code": "train_unexpected_error"}
         send_training_report(data)

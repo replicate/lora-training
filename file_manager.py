@@ -18,7 +18,7 @@ def upload_file_to_presigned_url(file_path, signed_url):
         print("File uploaded successfully.")
         return True
     else:
-        data = {"status": "fail","message": f"Unexpected error: {response.text}", "error_code": "upload_model_error"}
+        data = {"status": "fail","message": f"{response.text}", "error_code": "upload_model_error"}
         send_training_report(data)
         print(f"File upload failed: {response.text}")
 
@@ -67,7 +67,7 @@ def download_file(url):
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
     except Exception as error:
-        data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "download_data_error"}
+        data = {"status": "fail", "message": f"{error}", "error_code": "download_data_error"}
         send_training_report(data)
 
     return fn
@@ -114,7 +114,7 @@ def download_data():
         try:
             load_and_save_masks_and_captions(instance_data_folder, instance_data_folder+"/preprocessing", target_size=resolution, use_face_detection_instead=use_face)
         except Exception as error:
-            data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "preprocessing_error"}
+            data = {"status": "fail","message": f"{error}", "error_code": "preprocessing_error"}
             send_training_report(data)
 
 
@@ -124,5 +124,5 @@ if __name__ == '__main__':
     try:
         download_data()
     except Exception as error:
-        data = {"status": "fail","message": f"Unexpected error: {error}", "error_code": "download_error"}
+        data = {"status": "fail","message": f"{error}", "error_code": "download_error"}
         send_training_report(data)
