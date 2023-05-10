@@ -25,6 +25,8 @@ def test_and_upload():
     img_path = output_dir + "/out-1.png"
     image.save(img_path)
     upload_file_to_presigned_url(file_safetensors,upload_url)
+    data = {"status": "success", "message": "Train {} completed".format(os.environ.get("WANDB_NAME")), "error_code": ""}
+    send_training_report(data)
 
 if __name__ == '__main__':
     try:
