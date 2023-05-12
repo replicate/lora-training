@@ -11,6 +11,7 @@ docker run --rm --gpus all -it \
   -e TRIGGER_WORD="<>" \
   -e CLASS_WORD="" \
   -e STEP=2500 \
+  -e BATCH_SIZE=1 \
   -e PREPROCESSING=1 \
   -e FACE=1 \
   -e WANDB_API_KEY=<optional> \
@@ -27,6 +28,8 @@ docker run --rm --gpus all -it \
   -e CLASS="woman" \
   -e CLASS_DIR="./stable-diffusion-Regularization-Images/sd1.5/woman" \
   -e PREPROCESSING=0 \
+  -e STEP=1500 \
+  -e BATCH_SIZE=1 \
   -e FACE=0 \
   -e WANDB_API_KEY=<> \
   -e DATA_URL="<presigned_url>" \

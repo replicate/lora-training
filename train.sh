@@ -6,6 +6,8 @@ echo "Preprocessing ${PREPROCESSING}"
 echo "REPORT_URL ${REPORT_URL}"
 echo "REPORT_TOKEN ${REPORT_TOKEN}"
 echo "WANDB_NAME ${WANDB_NAME}"
+BATCH_SIZE="${BATCH_SIZE:=1}"
+echo "Batch Size: ${BATCH_SIZE}"
 
 padding_needed=$(( (4 - ${#DATA_URL} % 4) % 4 ))
 encoded_string_with_padding="${DATA_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
@@ -35,7 +37,7 @@ accelerate launch dreambooth_lora.py \
   --instance_prompt="a photo of ${TRIGGER_WORD} ${CLASS}" \
   --num_class_images=200 \
   --resolution=512 \
-  --train_batch_size=1 \
+  --train_batch_size=$BATCH_SIZE \
   --gradient_accumulation_steps=1 \
   --checkpointing_steps=500 \
   --learning_rate=1e-4 \
