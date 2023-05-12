@@ -1,4 +1,4 @@
-FROM huggingface/transformers-pytorch-gpu
+FROM huggingface/transformers-pytorch-gpu:4.29.1
 
 RUN apt-get update -y && apt-get install -y vim wget
 
