@@ -34,6 +34,7 @@ accelerate config default
 accelerate launch dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME  \
   --instance_data_dir=$INSTANCE_DIR \
+  --instance_prompt="a photo of ${TRIGGER_WORD}" \
   --output_dir=$OUTPUT_DIR \
   --resolution=$RESOLUTION \
   --train_batch_size=$BATCH_SIZE \
