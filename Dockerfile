@@ -14,6 +14,8 @@ RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install
 
 ADD convert-to-safetensors.py /app/convert-to-safetensors.py
 
+ADD accelerate.yaml /app/accelerate.yaml
+
 ADD file_manager.py /app/file_manager.py
 
 ADD preprocessing.py /app/preprocessing.py

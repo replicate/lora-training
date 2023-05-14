@@ -29,7 +29,7 @@ fi
 
 echo $INSTANCE_DIR
 
-accelerate config default
+accelerate config default --config_file /app/accelerate.yaml
 #Dreambooth lora
 accelerate launch dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME  \
