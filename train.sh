@@ -39,6 +39,7 @@ accelerate launch dreambooth_lora.py \
   --resolution=$RESOLUTION \
   --train_batch_size=$BATCH_SIZE \
   --gradient_accumulation_steps=1 \
+  --enable_xformers_memory_efficient_attention \
   --checkpointing_steps=500 \
   --learning_rate=1e-4 \
   --lr_scheduler="constant" \
