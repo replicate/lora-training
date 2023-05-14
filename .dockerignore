@@ -12,7 +12,6 @@ NED
 *.zip
 test.py
 .env
-*.json
 train
 train_data
 checkpoints_bk
