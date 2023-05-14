@@ -1,13 +1,14 @@
 #!/bin/bash
 echo "VAST Instance: ${VAST_CONTAINERLABEL}"
 echo "Trigger word: ${TRIGGER_WORD}"
-echo "Trigger word: ${CLASS}"
 echo "Preprocessing ${PREPROCESSING}"
 echo "REPORT_URL ${REPORT_URL}"
 echo "REPORT_TOKEN ${REPORT_TOKEN}"
 echo "WANDB_NAME ${WANDB_NAME}"
 BATCH_SIZE="${BATCH_SIZE:=1}"
 echo "Batch Size: ${BATCH_SIZE}"
+RESOLUTION="${RESOLUTION:=512}"
+echo "RESOLUTION: ${RESOLUTION}"
 
 padding_needed=$(( (4 - ${#DATA_URL} % 4) % 4 ))
 encoded_string_with_padding="${DATA_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
@@ -34,9 +35,7 @@ accelerate launch dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME  \
   --instance_data_dir=$INSTANCE_DIR \
   --output_dir=$OUTPUT_DIR \
-  --instance_prompt="a photo of ${TRIGGER_WORD} ${CLASS}" \
-  --num_class_images=200 \
-  --resolution=512 \
+  --resolution=$RESOLUTION \
   --train_batch_size=$BATCH_SIZE \
   --gradient_accumulation_steps=1 \
   --checkpointing_steps=500 \
@@ -45,7 +44,7 @@ accelerate launch dreambooth_lora.py \
   --lr_warmup_steps=0 \
   --report_to="wandb" \
   --max_train_steps=$STEP \
-  --validation_prompt="portrait photo of (${TRIGGER_WORD}), ${CLASS}, sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
+  --validation_prompt="portrait photo of (${TRIGGER_WORD}), sharp focus, elegant, render, realistic skin texture, photorealistic, hyper realism, 4k, hdr, smooth" \
   --validation_epochs=100 \
   --validation_negative_prompt="(deformed, distorted, disfigured:1.3), poorly drawn, bad anatomy, wrong anatomy, extra limb, missing limb, floating limbs, (mutated hands and fingers:1.4), disconnected limbs, mutation, mutated, ugly, disgusting, blurry, amputation" \
   --seed="0"
