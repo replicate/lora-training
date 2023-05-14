@@ -31,7 +31,7 @@ echo $INSTANCE_DIR
 
 accelerate config default --config_file /app/accelerate.yaml
 #Dreambooth lora
-accelerate launch dreambooth_lora.py \
+accelerate launch --mixed_precision="fp16" --zero_stage=3 dreambooth_lora.py \
   --pretrained_model_name_or_path=$MODEL_NAME  \
   --instance_data_dir=$INSTANCE_DIR \
   --instance_prompt="a photo of ${TRIGGER_WORD}" \

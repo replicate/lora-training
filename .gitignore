@@ -13,7 +13,8 @@ NED
 *.zip
 test.py
 .env
-*.json
+container-job-gpu.json
+homelab-379610-273fe301a796.json
 train
 train_data
 stablediffusion15

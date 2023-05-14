@@ -16,6 +16,8 @@ ADD convert-to-safetensors.py /app/convert-to-safetensors.py
 
 ADD accelerate.yaml /app/accelerate.yaml
 
+ADD ds_config.json /app/ds_config.json
+
 ADD file_manager.py /app/file_manager.py
 
 ADD preprocessing.py /app/preprocessing.py
