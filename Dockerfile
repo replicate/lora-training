@@ -2,8 +2,6 @@ FROM huggingface/transformers-pytorch-gpu:4.29.1
 
 RUN apt-get update -y && apt-get install -y vim wget
 
-RUN git clone https://github.com/tobecwb/stable-diffusion-Regularization-Images.git
-
 RUN wget https://raw.githubusercontent.com/vast-ai/vast-python/master/vast.py -O vast; chmod +x vast; 
 
 ADD requirements.txt ./requirements.txt
@@ -14,22 +12,24 @@ RUN git clone https://github.com/huggingface/diffusers.git && cd diffusers && pi
 
 RUN git clone https://github.com/cloneofsimo/lora.git && cd lora && pip3 install .
 
-ADD convert-to-safetensors.py /convert-to-safetensors.py
+ADD convert-to-safetensors.py /app/convert-to-safetensors.py
 
-ADD file_manager.py /file_manager.py
+ADD file_manager.py /app/file_manager.py
 
-ADD preprocessing.py /preprocessing.py
+ADD preprocessing.py /app/preprocessing.py
 
-ADD dreambooth_lora.py /dreambooth_lora.py
+ADD dreambooth_lora.py /app/dreambooth_lora.py
 
-ADD dreambooth.py /dreambooth.py
+ADD dreambooth.py /app/dreambooth.py
 
-ADD train.sh /train.sh
+ADD train.sh /app/train.sh
 
-ADD train.py /train.py
+ADD train.py /app/train.py
 
-ADD evaluate.py /evaluate.py
+ADD evaluate.py /app/evaluate.py
 
-ADD report.py /report.py
+ADD report.py /app/report.py
+
+WORKDIR /app
 
 CMD [ "./train.sh" ]
