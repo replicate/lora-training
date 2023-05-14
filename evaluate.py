@@ -32,5 +32,6 @@ if __name__ == '__main__':
     try:
         test_and_upload()
     except Exception as error:
+        print(error)
         data = {"status": "fail", "message": f"{error}", "error_code": "unexpected_error"}
         send_training_report(data)
