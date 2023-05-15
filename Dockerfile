@@ -2,7 +2,7 @@ FROM huggingface/transformers-pytorch-gpu:4.29.1
 
 RUN apt-get update -y && apt-get install -y vim wget
 
-RUN wget https://raw.githubusercontent.com/vast-ai/vast-python/master/vast.py -O vast; chmod +x vast; 
+RUN mkdir /app && wget https://raw.githubusercontent.com/vast-ai/vast-python/master/vast.py -O /app/vast; chmod +x vast; 
 
 ADD requirements.txt ./requirements.txt
 
