@@ -9,6 +9,8 @@ BATCH_SIZE="${BATCH_SIZE:=1}"
 echo "Batch Size: ${BATCH_SIZE}"
 RESOLUTION="${RESOLUTION:=512}"
 echo "RESOLUTION: ${RESOLUTION}"
+LEARNING_RATE="${LEARNING_RATE:=1e-4}"
+echo "LEARNING_RATE: ${LEARNING_RATE}"
 
 padding_needed=$(( (4 - ${#DATA_URL} % 4) % 4 ))
 encoded_string_with_padding="${DATA_URL}$(printf '%*s' $padding_needed | tr ' ' '=')"
@@ -41,7 +43,7 @@ accelerate launch --mixed_precision="fp16" --zero_stage=3 dreambooth_lora.py \
   --gradient_accumulation_steps=1 \
   --enable_xformers_memory_efficient_attention \
   --checkpointing_steps=500 \
-  --learning_rate=1e-4 \
+  --learning_rate=$LEARNING_RATE \
   --lr_scheduler="constant" \
   --lr_warmup_steps=0 \
   --report_to="wandb" \
