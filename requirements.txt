@@ -1,0 +1,8 @@
+accelerate
+safetensors
+gcloud
+google-cloud-storage
+bitsandbytes
+wandb
+xformers
+deepspeed

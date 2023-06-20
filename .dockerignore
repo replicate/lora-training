@@ -5,7 +5,6 @@ instance_data
 __debug*
 __pycache__
 checkpoints
-.cog
 *.safetensors
 output.zip
 cog.yaml
@@ -13,10 +12,7 @@ NED
 *.zip
 test.py
 .env
-container-job-gpu.json
-homelab-379610-273fe301a796.json
 train
 train_data
+checkpoints_bk
 stablediffusion15
-start.py
-NOTES.md

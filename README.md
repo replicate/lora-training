@@ -2,59 +2,39 @@
 
 ## Use on Replicate
 
-Easy-to-use model pre-configured for faces, objects, and styles:
+docker build -t dreamboothlora:latest .
 
-[![Replicate](https://replicate.com/replicate/lora-training/badge)](https://replicate.com/replicate/lora-training)
+docker run --rm --gpus all -it \
+  -e MODEL_NAME="runwayml/stable-diffusion-v1-5" \
+  -e INSTANCE_DIR="/home/lora-training/instance_data" \
+  -e OUTPUT_DIR="/home/lora-training/checkpoints" \
+  -e TRIGGER_WORD="<>" \
+  -e CLASS_WORD="" \
+  -e STEP=2500 \
+  -e BATCH_SIZE=1 \
+  -e PREPROCESSING=1 \
+  -e FACE=1 \
+  -e WANDB_API_KEY=<optional> \
+  -e DATA_URL="<presigned_url>" \
+  -e UPLOAD_URL="<presigned_url>" \
+  dreamboothlora:latest 
 
-Advanced model with all the parameters:
 
-[![Replicate](https://replicate.com/replicate/lora-advanced-training/badge)](https://replicate.com/replicate/lora-advanced-training)
+docker run --rm --gpus all -it \
+  -e MODEL_NAME="runwayml/stable-diffusion-v1-5" \
+  -e INSTANCE_DIR="/home/lora-training/instance_data" \
+  -e OUTPUT_DIR="/home/lora-training/checkpoints" \
+  -e TRIGGER_WORD="<>" \
+  -e CLASS="woman" \
+  -e CLASS_DIR="./stable-diffusion-Regularization-Images/sd1.5/woman" \
+  -e PREPROCESSING=0 \
+  -e STEP=1500 \
+  -e BATCH_SIZE=1 \
+  -e FACE=0 \
+  -e WANDB_API_KEY=<> \
+  -e DATA_URL="<presigned_url>" \
+  -e UPLOAD_URL="<presigned_url>" \
+  dreambooth:latest
 
-Feed the trained model into this inference model to run predictions:
 
-[![Replicate](https://replicate.com/replicate/lora/badge)](https://replicate.com/replicate/lora)
-
-If you want to share your trained LoRAs, please join the `#lora` channel in the [Replicate Discord](https://discord.gg/replicate).
-
-## Use locally
-
-First, download the pre-trained weights [with your Hugging Face auth token](https://huggingface.co/settings/tokens):
-
-```
-cog run script/download-weights <your-hugging-face-auth-token>
-```
-
-Then, you can run train your dreambooth:
-
-```
-cog predict -i instance_data=@my-images.zip
-```
-
-The resulting LoRA weights file can be used with `patch_pipe` function:
-
-```python
-from diffusers import StableDiffusionPipeline
-from lora_diffusion import patch_pipe, tune_lora_scale, image_grid
-import torch
-
-model_id = "runwayml/stable-diffusion-v1-5"
-
-pipe = StableDiffusionPipeline.from_pretrained(model_id, torch_dtype=torch.float16).to(
-    "cuda:1"
-)
-
-patch_pipe(pipe, "./my-images.safetensors")
-prompt = "detailed photo of <s1><s2>, detailed face, a brown cloak, brown steampunk corset, belt, virtual youtuber, cowboy shot, feathers in hair, feather hair ornament, white shirt, brown gloves, shooting arrows"
-
-tune_lora_scale(pipe.unet, 0.8)
-tune_lora_scale(pipe.text_encoder, 0.8)
-
-imgs = pipe(
-    [prompt],
-    num_inference_steps=50,
-    guidance_scale=4.5,
-    height=640,
-    width=512,
-).images
-...
-```
+git submodule add https://github.com/kohya-ss/sd-scripts.git
